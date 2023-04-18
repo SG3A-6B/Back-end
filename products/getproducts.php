@@ -12,7 +12,7 @@ try {
   $query = $db->query($sql);
   $category = $query->fetch(PDO::FETCH_ASSOC);
 
-  $sql = "select * from product where category_id = $category_id";
+  $sql = "select * from product where category_id = $category_id order by brand";
   $query = $db->query($sql);
   $products = $query->fetchAll(PDO::FETCH_ASSOC);
 

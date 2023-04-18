@@ -1,4 +1,5 @@
 <?php
+
 function openDb(): object {
   $ini= parse_ini_file("../config.ini", true);
 

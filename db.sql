@@ -2,6 +2,18 @@ drop database if exists partiokauppa;
 create database partiokauppa;
 use partiokauppa;
 
+/* USERS */
+
+create table admin (
+  id int primary key auto_increment,
+  firstname varchar(50) not null,
+  lastname varchar(50) not null,
+  email varchar(50) not null,
+  password varchar(50) not null
+);
+
+insert into admin (firstname, lastname, email, password) values ('test', 'admin', 'admin@admin', 'admin');
+
 /* CATEGORY */
 
 create table category (
@@ -12,7 +24,7 @@ create table category (
 insert into category (name) values ('Reput ja laukut');
 insert into category (name) values ('Teltat');
 insert into category (name) values ('Makuupussit');
-insert into category (name) values ('Retkikeittimet');
+insert into category (name) values ('Retkiruokailu');
 insert into category (name) values ('Työkalut');
 insert into category (name) values ('Valaisimet');
 insert into category (name) values ('Ensiapuvälineet');
@@ -25,11 +37,11 @@ create table product (
   name varchar(100) not null,
   description varchar(500) not null,
   price decimal(10,2) not null,
-  image varchar(50),
+  image varchar(100),
   category_id int not null,
   index category_id(category_id),
   foreign key (category_id) references category(id)
-  on delete restrict
+  on delete cascade
 );
 
 /* Reput ja laukut */
