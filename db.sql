@@ -2,7 +2,43 @@ drop database if exists partiokauppa;
 create database partiokauppa;
 use partiokauppa;
 
-/* USERS */
+/* ORDERING */
+/* LUO ENSIN TAULUT ADMIN, CATEGORY JA PRODUCT */
+/* JA SITTEN VASTA TAULUT CUSTOMER, `ORDER` JA ORDER_ROW */
+
+create table customer (
+  id int primary key auto_increment,
+  firstname varchar(50) not null,
+  lastname varchar(50) not null,
+  email varchar(50) not null,
+  phone varchar(50) not null,
+  address varchar(50) not null,
+  zip varchar(10) not null,
+  city varchar(30) not null
+);
+
+create table `order` (
+  id int primary key auto_increment,
+  order_date timestamp default current_timestamp,
+  customer_id int not null,
+  index customer_id(customer_id),
+  foreign key (customer_id) references customer(id)
+  on delete restrict
+);
+
+CREATE TABLE order_row (
+  order_id INT NOT NULL,
+  INDEX order_id(order_id),
+  FOREIGN KEY (order_id) REFERENCES `order`(id)
+  ON DELETE RESTRICT,
+  product_id INT NOT NULL,
+  INDEX product_id(product_id),
+  FOREIGN KEY (product_id) REFERENCES product(id)
+  ON DELETE RESTRICT,
+  kpl INT NOT NULL
+);
+
+/* ADMIN */
 
 create table admin (
   id int primary key auto_increment,
