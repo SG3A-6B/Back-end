@@ -8,11 +8,23 @@ $id = filter_var($input->id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 try {
   $db = openDb();
 
-  $query = $db->prepare("delete from product where id=(:id)");
+  $query = $db->prepare("SELECT image FROM product WHERE id=:id");
+  $query->bindValue(":id", $id, PDO::PARAM_INT);
+  $query->execute();
+  $result = $query->fetch(PDO::FETCH_ASSOC);
+  $imageFilename = $result['image'];
+
+  // Poistetaan tuote tietokannasta
+  $query = $db->prepare("DELETE FROM product WHERE id=:id");
   $query->bindValue(":id", $id, PDO::PARAM_INT);
   $query->execute();
 
-  header("http/1.1 200 ok");
+  // Poistetaan kuva "images" kansiosta
+  if ($imageFilename !== 'placeholder.png') {
+    unlink("../images/products/$imageFilename");
+  }
+
+  header("HTTP/1.1 200 OK");
   $data = array("id" => $id);
   print json_encode($data);
 }
